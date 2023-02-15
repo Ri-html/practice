@@ -1,0 +1,63 @@
+from os import system
+#variables
+dic={1:"0 0",2:"0 1",3:"0 2",
+     4:"1 0",5:"1 1",6:"1 2",
+     7:"2 0",8:"2 1",9:"2 2"}
+arr=[[1,2,3],
+     [4,5,6],
+     [7,8,9]]
+Victor=False
+player='O'
+anotherGame='y'
+ 
+#create tic-tac-toe board
+def ticTacToeBoard():
+    for i in range(3):
+        print('{0}|{1}|{2}'.format(arr[i][0],arr[i][1],arr[i][2]))
+        if i==2:
+            break
+        print('- - -')
+
+#check if winning condition is met
+def check_victor(x,y):
+    if arr[x][0]==arr[x][1]==arr[x][2] or arr[0][y]==arr[1][y]==arr[2][y]:
+        print('player{0} wins'.format(player))
+        return True
+    if x==y and arr[0][0]==arr[1][1]==arr[2][2]:
+        print('player{0} wins'.format(player))
+        return True
+    if x+y==2 and arr[0][2]==arr[1][1]==arr[2][0]:
+        print('player{0} wins'.format(player))
+        return True
+    return False
+
+#run game while the user does not choose to end it
+while anotherGame=='y':
+    while Victor==False:
+        ticTacToeBoard()
+        while True:
+            try:
+                choice=int(input("{0}'s turn,please select a number:".format(player)))
+                x,y=map(int,dic[choice].split())
+                if arr[x][y]=='X' or arr[x][y]=='O':
+                    raise ValueError
+                break
+            except (ValueError,KeyError):
+                print("please enter a number from 1-9")
+        arr[x][y]=player
+        Victor=check_victor(x,y)
+        player='O' if player=='X' else 'X'
+    while True:
+        try:
+            another=input("Do you want to play another game?y/n")
+            if another!='y' and another!='n':
+                raise ValueError
+            break
+        except ValueError:
+            print('please enter y or n')
+    count,Victor=1,False
+    for i in range(3):
+        for j in range(3):
+            arr[i][j]=count
+            count+=1
+    system('cls')
